@@ -2,6 +2,7 @@ import os.path
 from os import environ
 import requests
 import psycopg2
+import pickle
 import json
 from datetime import datetime
 
@@ -62,6 +63,9 @@ class YouTube_Video_DB(object):
 			query_url = base_url%(mega_key, self.yt_api_key)
 			r = requests.get(query_url)
 			parsed_json = json.loads(r.text)
+			#diag = open('/home/doylead/kpds/scraping/scripts/diag.pickle','w')
+			#pickle.dump(parsed_json,diag)
+			#diag.close()
 			all_items += parsed_json['items']
 
 		# At this point all_items contains a list of all data,
