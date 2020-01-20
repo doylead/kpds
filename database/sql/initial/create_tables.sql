@@ -10,6 +10,7 @@ CREATE TABLE "YouTube_Videos" (
  video_duration INTEGER,
  video_thumbnail_url VARCHAR,
  tracking BOOLEAN DEFAULT 'false',
+ scan_freq INTEGER,
  video_captions BOOLEAN,
  video_licensed BOOLEAN
 );
@@ -24,7 +25,9 @@ CREATE TABLE "YouTube_Channels" (
  channel_description VARCHAR,
  channel_custom_url VARCHAR,
  youtube_channel_external_key VARCHAR,
- tracking BOOLEAN DEFAULT 'false'
+ tracking BOOLEAN DEFAULT 'false',
+ scan_freq INTEGER,
+ initial_scan BOOLEAN DEFAULT 'false'
 );
 
 ALTER TABLE "YouTube_Channels" ADD CONSTRAINT YouTube_Channels_pkey PRIMARY KEY (youtube_channel_id);
