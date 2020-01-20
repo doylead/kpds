@@ -10,7 +10,7 @@ CREATE TABLE "YouTube_Videos" (
  video_duration INTEGER,
  video_thumbnail_url VARCHAR,
  tracking BOOLEAN DEFAULT 'false',
- scan_freq INTEGER,
+ scan_frequency INTEGER,
  video_captions BOOLEAN,
  video_licensed BOOLEAN
 );
@@ -26,7 +26,7 @@ CREATE TABLE "YouTube_Channels" (
  channel_custom_url VARCHAR,
  youtube_channel_external_key VARCHAR,
  tracking BOOLEAN DEFAULT 'false',
- scan_freq INTEGER,
+ scan_frequency INTEGER,
  initial_scan BOOLEAN DEFAULT 'false'
 );
 
