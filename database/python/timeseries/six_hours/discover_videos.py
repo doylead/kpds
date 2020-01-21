@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import psycopg2
 from psycopg2.extras import execute_values
 import codecs
@@ -48,7 +50,6 @@ channel_query = ('SELECT youtube_channel_id,youtube_channel_external_key '
                     'ORDER BY youtube_channel_id;')
 cur.execute(channel_query)
 channel_results = cur.fetchall()
-# Currently prints only SMTOWN, as expected
 
 ## Declare necessary logic variables
 
