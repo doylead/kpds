@@ -46,7 +46,7 @@ def unpack_video_json(json_object,cat1,cat2=None,cat3=None,part='snippet'):
 ## Query DB for channels actively being tracked at this frequency
 channel_query = ('SELECT youtube_channel_id,youtube_channel_external_key '
                     'FROM "YouTube_Channels" '
-                    'WHERE tracking=\'t\' AND scan_frequency=720 '
+                    'WHERE discovery_tracking=\'t\' AND discovery_frequency=720 '
                     'ORDER BY youtube_channel_id;')
 cur.execute(channel_query)
 channel_results = cur.fetchall()
@@ -106,7 +106,7 @@ for channel_result in channel_results:
 
         ## youtube_channel_id defined above
         video_type_id = 1 # To be modified later
-        tracking = False # To be modified later
+        stats_tracking = False # To be modified later
 
         published_datetimes = unpack_video_json(jn,'publishedAt')
         video_titles = unpack_video_json(jn,'title')
@@ -133,7 +133,7 @@ for channel_result in channel_results:
         insert_query = ('INSERT INTO "YouTube_Videos" '
                 '(youtube_channel_id,video_type_id,published_datetime,discovered_datetime,'
                 'video_title,video_description,youtube_video_external_key,video_duration,'
-                'video_thumbnail_url,tracking,video_captions,video_licensed) '
+                'video_thumbnail_url,stats_tracking,video_captions,video_licensed) '
                 'values %s')
 
         ## FOR loop over those videos
@@ -155,7 +155,7 @@ for channel_result in channel_results:
                     youtube_video_external_keys[i],
                     video_durations[i],
                     video_thumbnail_urls[i],
-                    tracking,
+                    stats_tracking,
                     video_captions[i],
                     video_licensed[i]
                     )
@@ -168,4 +168,3 @@ for channel_result in channel_results:
 
 cur.close()
 conn.close()
-
