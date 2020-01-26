@@ -10,7 +10,7 @@
 
 **discovered_datetime** (timestamp w/tz) - The time the video was first found by our crawlers
 
-**video_title** (varchar) - TEXT
+**video_title** (varchar) - The video's title on YouTube at the time of discovery
 
 **video_description** (varchar) - The video’s description on YouTube at the time of discovery
 
@@ -18,12 +18,12 @@
 
 **video_duration** (integer) - The video’s run length, measured in seconds
 
-**video_thumbnail_url** (varchar) - TEXT
+**video_thumbnail_url** (varchar) - A URL pointing to the video thumbnail
 
-**stats_tracking** (boolean) - Whether time series data is being recorded for this video (1/True indicates data is being logged)
+**stats_tracking** (boolean) - Whether time series data is being recorded for this video (True indicates data is being collected)
 
-**stats_frequency** (integer) - TEXT
+**stats_frequency** (integer) - The time between sequential statistics calls, measured in minutes
 
-**video_captions** (boolean) - TEXT
+**video_captions** (boolean) - Whether or not this video has captions (True indicates video is captioned)
 
-**video_licensed** (boolean) - TEXT
+**video_licensed** (boolean) - Whether or not this video has licensed content (True indicates video is licensed)
