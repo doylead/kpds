@@ -8,6 +8,9 @@ import json
 from os import environ
 from datetime import datetime, timezone
 from isodate import parse_duration
+from sys import argv
+
+script_start_time = datetime.now()
 
 yt_api_key = environ['YT_API_KEY']
 connstring = "dbname='kpds'"
@@ -168,3 +171,15 @@ for channel_result in channel_results:
 
 cur.close()
 conn.close()
+
+script_end_time = datetime.now()
+
+path_inc_script = argv[0]
+temp_str = path_inc_script.split('/')
+temp_str[-1] = ''
+path_to_script = '/'.join(temp_str)
+
+timing_output_file = open(path_to_script+"timing.txt","a")
+print(script_end_time-script_start_time,file=timing_output_file)
+timing_output_file.close()
+
