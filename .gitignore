@@ -1,2 +1,3 @@
 database/python/timeseries/six_hours/log.txt
 database/python/timeseries/six_hours/timing.txt
+bin/__pycache__
