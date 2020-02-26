@@ -9,7 +9,6 @@ from os import environ
 from datetime import datetime, timezone
 from isodate import parse_duration
 from sys import argv
-from utilities import unpack_video_json
 
 script_start_time = datetime.now()
 
@@ -19,6 +18,33 @@ conn = psycopg2.connect(connstring)
 cur = conn.cursor()
 
 ### This script to be called by CRON - Check scheduling!
+
+def unpack_video_json(json_object,cat1,cat2=None,cat3=None,part='snippet'):
+    maxResults = len(json_object['items'])
+
+    # Extract information
+    if cat3 is not None:
+        l = [json_object['items'][i][part][cat1][cat2][cat3] for i in range(maxResults)]
+    elif cat2 is not None:
+        l = [json_object['items'][i][part][cat1][cat2] for i in range(maxResults)]
+    else:
+        l = [json_object['items'][i][part][cat1] for i in range(maxResults)]
+
+    # Process if necessary
+    # Convert duration to seconds
+    if cat1 == 'duration':
+        l = [int(parse_duration(l[i]).total_seconds()) for i in range(maxResults)]
+
+    # Format Boolean variables
+    if cat1 == 'caption':
+        l = [json.loads(l[i]) for i in range(maxResults)]
+
+    # Converts timezone to UTC
+    if cat1 == 'publishedAt':
+        l = [datetime.strptime(l[i], "%Y-%m-%dT%H:%M:%S.%fZ") for i in range(maxResults)]
+        l = [l[i].astimezone(timezone.utc) for i in range(maxResults)]
+
+    return l
 
 ## Query DB for channels actively being tracked at this frequency
 channel_query = ('SELECT youtube_channel_id,youtube_channel_external_key '
