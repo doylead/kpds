@@ -9,6 +9,8 @@ def unpack_video_json(
         cat3=None, # If categories are tiered, third tier
         part='snippet' # Which part of the YouTube API call we're scanning
         ):
+    ## This method is designed to pull a particular data item from a json-type response
+    ## from the YouTube API
 
     results = len(json_object['items'])
 
@@ -37,3 +39,21 @@ def unpack_video_json(
 
     return l
 
+def flatten_list(nested_list):
+    ## Converts a nested list (e.g. results from a SQL query returning one column
+    ## of data as a list of tuples) to a flattened list for easier manipulation
+    ## and iteration
+
+    flattened_list = [item for sublist in nested_list for item in sublist]
+    return flattened_list
+
+def segment_list(flat_list,max_segment_size):
+    ## Splits of a list with an arbitrary number of elements into a a list of
+    ## sub-lists, where each sub-list contains no more than max_segment_size
+    ## elements
+
+    n = len(flat_list) # Total number of elements in the original list
+    m = max_segment_size # Makes the required code much shorter
+    segmented_list = [flat_list[i*m:(i+1)*m] for i in range((n+m-1)//m)]
+    # Notably x//y represents floor(x/y)
+    return segmented_list
