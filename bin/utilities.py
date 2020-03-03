@@ -2,7 +2,7 @@ import json
 from isodate import parse_duration
 from datetime import datetime, timezone
 
-def unpack_video_json(
+def unpack_video_discovery_json(
         json_object, # The object to be "unpacked" - a raw JSON response
         cat1, # The first-level category, e.g. "Duration"
         cat2=None, # If categories are tiered, second tier
@@ -57,3 +57,37 @@ def segment_list(flat_list,max_segment_size):
     segmented_list = [flat_list[i*m:(i+1)*m] for i in range((n+m-1)//m)]
     # Notably x//y represents floor(x/y)
     return segmented_list
+
+def unpack_video_ts_json(
+        json_object, # The object to be "unpacked" - a raw JSON response
+        dt_now, # A DateTime object of the current time in UTC
+        fill_na = None # What to put in empty "cells"
+        ):
+    ## Takes the JSON object and formats it for easier access
+    ## Data order is 
+    ##    [timestamp, numViews, numLikes, numDislikes, numComments, numFavorites]    
+
+    nitems = len(json_object['items'])
+    result = []
+    for i in range(nitems):
+        this_item = json_object['items'][i]['statistics']
+        these_keys = this_item.keys()
+
+        ## For some reason, not all videos have all properties/values
+        ## If a property is not defined set it to fill_na
+        numViews = this_item['viewCount'] if ('viewCount' in these_keys) else fill_na
+        numLikes = this_item['likeCount'] if ('likeCount' in these_keys) else fill_na
+        numDislikes = this_item['dislikeCount'] if ('dislikeCount' in these_keys) else fill_na
+        numComments = this_item['commentCount'] if ('commentCount' in these_keys) else fill_na
+        numFavorites = this_item['favoriteCount'] if ('favoriteCount' in these_keys) else fill_na
+        row = [dt_now, numViews, numLikes, numDislikes, numComments, numFavorites]
+        result.append(row)
+
+    return result
+
+'''
+        if 'viewCount' in these_keys:
+            numViews = this_item['viewCount']
+        else:
+            numViews = fill_na
+'''

@@ -9,7 +9,7 @@ from os import environ
 from datetime import datetime, timezone
 from isodate import parse_duration
 from sys import argv
-from utilities import unpack_video_json
+from utilities import unpack_video_discovery_json
 
 script_start_time = datetime.now()
 
@@ -85,7 +85,7 @@ for channel_result in channel_results:
         video_type_id = 1 # To be modified later
         stats_tracking = False # To be modified later
 
-        published_datetimes = unpack_video_json(jn,'publishedAt')
+        published_datetimes = unpack_video_discovery_json(jn,'publishedAt')
         video_titles = unpack_video_json(jn,'title')
         video_descriptions = unpack_video_json(jn,'description')
         video_thumbnail_urls = unpack_video_json(jn,'thumbnails','high','url')
