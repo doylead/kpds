@@ -15,7 +15,7 @@ from os import environ
 from datetime import datetime, timezone
 from isodate import parse_duration
 from sys import argv
-from utilities import unpack_video_json,flatten_list,segment_list
+from utilities import unpack_video_ts_json,flatten_list,segment_list
 
 script_start_time = datetime.now()
 
@@ -41,7 +41,16 @@ for segment in segmented_video_results:
     composite_key = ",".join(segment)
     ## We now have composite keys of, at max, 50 entries (YT API Limit)
 
-### Interpret YouTube API results
+    composite_key = ",".join(segment)
+    dt_now = datetime.now(timezone.utc)
+    base_url = 'https://www.googleapis.com/youtube/v3/videos?part=statistics&id=%s&key=%s'
+    query_url = base_url%(composite_key, yt_api_key)
+    r = requests.get(query_url)
+    parsed_json = json.loads(r.text)
+
+    ## Data order is
+    ##    [timestamp, numViews, numLikes, numDislikes, numComments, numFavorites]
+    parsed = unpack_video_ts_json(parsed_json,dt_now)
 
 ### Store in SQL
 
