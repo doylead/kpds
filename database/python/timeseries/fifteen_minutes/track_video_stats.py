@@ -37,6 +37,9 @@ video_results = cur.fetchall()
 flat_video_results = flatten_list(video_results)
 segmented_video_results = segment_list(flat_video_results,50)
 
+for video_id in flat_video_results:
+    
+
 for segment in segmented_video_results:
     composite_key = ",".join(segment)
     ## We now have composite keys of, at max, 50 entries (YT API Limit)
