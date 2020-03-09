@@ -16,6 +16,8 @@ from datetime import datetime, timezone
 from isodate import parse_duration
 from sys import argv
 from utilities import unpack_video_ts_json,flatten_list,segment_list
+from youtube_stats_utilities import (table_exists,
+    create_video_stats_table,add_video_stats_data)
 
 script_start_time = datetime.now()
 
@@ -38,13 +40,13 @@ flat_video_results = flatten_list(video_results)
 segmented_video_results = segment_list(flat_video_results,50)
 
 for video_id in flat_video_results:
-    
+    if not table_exists(video_id):
+        create_video_stats_table(video_id)
 
 for segment in segmented_video_results:
     composite_key = ",".join(segment)
     ## We now have composite keys of, at max, 50 entries (YT API Limit)
 
-    composite_key = ",".join(segment)
     dt_now = datetime.now(timezone.utc)
     base_url = 'https://www.googleapis.com/youtube/v3/videos?part=statistics&id=%s&key=%s'
     query_url = base_url%(composite_key, yt_api_key)
@@ -55,7 +57,18 @@ for segment in segmented_video_results:
     ##    [timestamp, numViews, numLikes, numDislikes, numComments, numFavorites]
     parsed = unpack_video_ts_json(parsed_json,dt_now)
 
-### Store in SQL
+    for line in parsed:
+        table_id = line[0]
+        data = line[1:]
+        add_video_stats_data(table_id,data)
 
+script_end_time = datetime.now()
 
+path_inc_script = argv[0]
+temp_str = path_inc_script.split('/')
+temp_str[-1] = ''
+path_to_script = '/'.join(temp_str)
 
+timing_output_file = open(path_to_script+"timing.txt","a")
+print(script_end_time-script_start_time,file=timing_output_file)
+timing_output_file.close()

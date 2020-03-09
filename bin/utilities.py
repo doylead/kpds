@@ -70,6 +70,7 @@ def unpack_video_ts_json(
     nitems = len(json_object['items'])
     result = []
     for i in range(nitems):
+        this_id = json_object['items'][i]['id']
         this_item = json_object['items'][i]['statistics']
         these_keys = this_item.keys()
 
@@ -80,14 +81,8 @@ def unpack_video_ts_json(
         numDislikes = this_item['dislikeCount'] if ('dislikeCount' in these_keys) else fill_na
         numComments = this_item['commentCount'] if ('commentCount' in these_keys) else fill_na
         numFavorites = this_item['favoriteCount'] if ('favoriteCount' in these_keys) else fill_na
-        row = [dt_now, numViews, numLikes, numDislikes, numComments, numFavorites]
+        row = [this_id, dt_now, numViews, numLikes, numDislikes, numComments, numFavorites]
         result.append(row)
 
     return result
 
-'''
-        if 'viewCount' in these_keys:
-            numViews = this_item['viewCount']
-        else:
-            numViews = fill_na
-'''

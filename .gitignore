@@ -1,3 +1,5 @@
 database/python/timeseries/six_hours/log.txt
 database/python/timeseries/six_hours/timing.txt
+database/python/timeseries/fifteen_minutes/log.txt
+database/python/timeseries/fifteen_minutes/timing.txt
 bin/__pycache__

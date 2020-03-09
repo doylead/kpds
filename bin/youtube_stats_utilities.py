@@ -41,12 +41,13 @@ def add_video_stats_data(table_name,data):
     ## Adds a row of data to a YouTube_Video_Stats table
     # WIP
     # May be an area for future security improvement?
-    query_string = ("INSERT INTO {shema_table} "
+    query_string = ("INSERT INTO {schema_table} "
         "(scan_datetime, view_count, like_count, dislike_count, "
-        "comment count, favorite count) VALUES "
+        "comment_count, favorite_count) VALUES "
         "(%s, %s, %s, %s, %s, %s)")
     query = sql.SQL(query_string).format(
         schema_table = sql.Identifier("YouTube_Video_Stats",table_name)
         )
     cur.execute(query,data)
+    conn.commit()
 
