@@ -1,8 +1,8 @@
-CREATE SCHEMA youtube_video_stats;
+CREATE SCHEMA "YouTube_Video_Stats";
 
 /*
 CREATE TABLE "youtube_video_stats.X" (
- scan_datetime TIMESTAMP WITH TIME ZONE,
+ scan_datetime TIMESTAMPTZ,
  view_count BIGINT,
  like_count INTEGER,
  dislike_count INTEGER,
