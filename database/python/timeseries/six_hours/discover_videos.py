@@ -86,10 +86,10 @@ for channel_result in channel_results:
         stats_tracking = False # To be modified later
 
         published_datetimes = unpack_video_discovery_json(jn,'publishedAt')
-        video_titles = unpack_video_json(jn,'title')
-        video_descriptions = unpack_video_json(jn,'description')
-        video_thumbnail_urls = unpack_video_json(jn,'thumbnails','high','url')
-        youtube_video_external_keys = unpack_video_json(jn,'resourceId','videoId')
+        video_titles = unpack_video_discovery_json(jn,'title')
+        video_descriptions = unpack_video_discovery_json(jn,'description')
+        video_thumbnail_urls = unpack_video_discovery_json(jn,'thumbnails','high','url')
+        youtube_video_external_keys = unpack_video_discovery_json(jn,'resourceId','videoId')
 
         # Necessary to get video length and some other options
         composite_external_key = ",".join(youtube_video_external_keys)
@@ -103,9 +103,9 @@ for channel_result in channel_results:
         rn = requests.get(qn)
         jn = json.loads(rn.text)
 
-        video_durations = unpack_video_json(jn,'duration',part="contentDetails")
-        video_captions = unpack_video_json(jn,'caption',part="contentDetails")
-        video_licensed = unpack_video_json(jn,'licensedContent',part="contentDetails")
+        video_durations = unpack_video_discovery_json(jn,'duration',part="contentDetails")
+        video_captions = unpack_video_discovery_json(jn,'caption',part="contentDetails")
+        video_licensed = unpack_video_discovery_json(jn,'licensedContent',part="contentDetails")
 
         insert_query = ('INSERT INTO "YouTube_Videos" '
                 '(youtube_channel_id,video_type_id,published_datetime,discovered_datetime,'

@@ -1,6 +1,7 @@
 import json
 from isodate import parse_duration
 from datetime import datetime, timezone
+from copy import deepcopy
 
 def unpack_video_discovery_json(
         json_object, # The object to be "unpacked" - a raw JSON response
@@ -34,7 +35,18 @@ def unpack_video_discovery_json(
 
     # Converts timezone to UTC
     if cat1 == 'publishedAt':
-        l = [datetime.strptime(l[i], "%Y-%m-%dT%H:%M:%S.%fZ") for i in range(results)]
+        # This leaves much to be desired in terms of ease of reading.  Modifying in-place
+        # for the return statement is probably sub-optimal.
+        m = deepcopy(l)
+        l = []
+        format_A = "%Y-%m-%dT%H:%M:%S.%fZ"
+        format_B = "%Y-%m-%dT%H:%M:%SZ"
+        for i in range(results):
+            try:
+                dt = datetime.strptime(m[i], format_A)
+            except ValueError:
+                dt = datetime.strptime(m[i], format_B)
+            l.append(dt)
         l = [l[i].astimezone(timezone.utc) for i in range(results)]
 
     return l
